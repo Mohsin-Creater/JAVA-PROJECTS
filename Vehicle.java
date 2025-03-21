@@ -1,5 +1,5 @@
 package vehicle;
 
-public class main {
+public class vehicle {
 
 }
