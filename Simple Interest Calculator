@@ -1,0 +1,58 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class SimpleInterestCalculator extends JFrame {
+    private JTextField principalField, rateField, timeField, resultField;
+    
+    public SimpleInterestCalculator() {
+        setTitle("Simple Interest Calculator");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridLayout(5, 2, 10, 10));
+        
+        add(new JLabel("Principal Amount:"));
+        principalField = new JTextField();
+        add(principalField);
+        
+        add(new JLabel("Rate of Interest (%):"));
+        rateField = new JTextField();
+        add(rateField);
+        
+        add(new JLabel("Time (years):"));
+        timeField = new JTextField();
+        add(timeField);
+        
+        JButton calculateButton = new JButton("Calculate");
+        calculateButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                calculateSimpleInterest();
+            }
+        });
+        add(calculateButton);
+        
+        add(new JLabel("Simple Interest:"));
+        resultField = new JTextField();
+        resultField.setEditable(false);
+        add(resultField);
+        
+        setVisible(true);
+    }
+    
+    private void calculateSimpleInterest() {
+        try {
+            double principal = Double.parseDouble(principalField.getText());
+            double rate = Double.parseDouble(rateField.getText());
+            double time = Double.parseDouble(timeField.getText());
+            
+            double interest = (principal * rate * time) / 100;
+            resultField.setText(String.format("%.2f", interest));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numbers", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new SimpleInterestCalculator());
+    }
+}

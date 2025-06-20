@@ -1,0 +1,58 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class SalaryCalculator extends JFrame {
+    private JTextField basicSalaryField, bonusField, deductionsField, netSalaryField;
+    
+    public SalaryCalculator() {
+        setTitle("Salary Calculator");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridLayout(5, 2, 10, 10));
+        
+        add(new JLabel("Basic Salary:"));
+        basicSalaryField = new JTextField();
+        add(basicSalaryField);
+        
+        add(new JLabel("Bonus:"));
+        bonusField = new JTextField();
+        add(bonusField);
+        
+        add(new JLabel("Deductions:"));
+        deductionsField = new JTextField();
+        add(deductionsField);
+        
+        JButton calculateButton = new JButton("Calculate");
+        calculateButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                calculateNetSalary();
+            }
+        });
+        add(calculateButton);
+        
+        add(new JLabel("Net Salary:"));
+        netSalaryField = new JTextField();
+        netSalaryField.setEditable(false);
+        add(netSalaryField);
+        
+        setVisible(true);
+    }
+    
+    private void calculateNetSalary() {
+        try {
+            double basic = Double.parseDouble(basicSalaryField.getText());
+            double bonus = Double.parseDouble(bonusField.getText());
+            double deductions = Double.parseDouble(deductionsField.getText());
+            
+            double netSalary = basic + bonus - deductions;
+            netSalaryField.setText(String.format("%.2f", netSalary));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numbers", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new SalaryCalculator());
+    }
+}

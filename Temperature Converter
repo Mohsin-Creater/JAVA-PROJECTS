@@ -1,0 +1,47 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class TemperatureConverter extends JFrame {
+    private JTextField celsiusField;
+    private JLabel fahrenheitLabel;
+    
+    public TemperatureConverter() {
+        setTitle("Temperature Converter");
+        setSize(400, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridLayout(3, 2, 10, 10));
+        
+        add(new JLabel("Celsius:"));
+        celsiusField = new JTextField();
+        add(celsiusField);
+        
+        JButton convertButton = new JButton("Convert");
+        convertButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                convertToFahrenheit();
+            }
+        });
+        add(convertButton);
+        
+        add(new JLabel("Fahrenheit:"));
+        fahrenheitLabel = new JLabel("");
+        add(fahrenheitLabel);
+        
+        setVisible(true);
+    }
+    
+    private void convertToFahrenheit() {
+        try {
+            double celsius = Double.parseDouble(celsiusField.getText());
+            double fahrenheit = (celsius * 9/5) + 32;
+            fahrenheitLabel.setText(String.format("%.2f", fahrenheit));
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new TemperatureConverter());
+    }
+}
