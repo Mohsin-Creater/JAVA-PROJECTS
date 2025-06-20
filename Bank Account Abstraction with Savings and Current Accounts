@@ -1,0 +1,83 @@
+abstract class BankAccount {
+    protected double balance;
+
+    public BankAccount(double initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    public abstract void deposit(double amount);
+    public abstract void withdraw(double amount);
+    public double getBalance() {
+        return balance;
+    }
+}
+
+class SavingsAccount extends BankAccount {
+    private static final double MIN_BALANCE = 500;
+
+    public SavingsAccount(double initialBalance) {
+        super(initialBalance);
+    }
+
+    @Override
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited: " + amount);
+        } else {
+            System.out.println("Invalid deposit amount");
+        }
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount > 0 && (balance - amount) >= MIN_BALANCE) {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount);
+        } else {
+            System.out.println("Insufficient balance or invalid amount");
+        }
+    }
+}
+
+class CurrentAccount extends BankAccount {
+    private static final double OVERDRAFT_LIMIT = 10000;
+
+    public CurrentAccount(double initialBalance) {
+        super(initialBalance);
+    }
+
+    @Override
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited: " + amount);
+        } else {
+            System.out.println("Invalid deposit amount");
+        }
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount > 0 && (balance - amount) >= -OVERDRAFT_LIMIT) {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount);
+        } else {
+            System.out.println("Exceeds overdraft limit or invalid amount");
+        }
+    }
+}
+
+public class BankDemo {
+    public static void main(String[] args) {
+        BankAccount savings = new SavingsAccount(1000);
+        savings.deposit(500);
+        savings.withdraw(200);
+        System.out.println("Savings balance: " + savings.getBalance());
+
+        BankAccount current = new CurrentAccount(5000);
+        current.deposit(2000);
+        current.withdraw(7000);
+        System.out.println("Current balance: " + current.getBalance());
+    }
+}
