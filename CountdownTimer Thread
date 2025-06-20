@@ -1,0 +1,20 @@
+public class CountdownTimer extends Thread {
+    @Override
+    public void run() {
+        for (int i = 10; i >= 1; i--) {
+            System.out.println("Countdown: " + i);
+            try {
+                Thread.sleep(1000); // 1 second between counts
+            } catch (InterruptedException e) {
+                System.out.println("Countdown interrupted!");
+                return;
+            }
+        }
+        System.out.println("Countdown complete!");
+    }
+
+    public static void main(String[] args) {
+        CountdownTimer timer = new CountdownTimer();
+        timer.start();
+    }
+}

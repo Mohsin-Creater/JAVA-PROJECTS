@@ -1,0 +1,35 @@
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+public class ClockDisplay extends Thread {
+    private volatile boolean running = true;
+    
+    @Override
+    public void run() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        while (running) {
+            LocalTime currentTime = LocalTime.now();
+            System.out.println("Current time: " + currentTime.format(formatter));
+            try {
+                Thread.sleep(1000); // Update every second
+            } catch (InterruptedException e) {
+                System.out.println("Clock interrupted");
+                running = false;
+            }
+        }
+    }
+    
+    public void stopClock() {
+        running = false;
+        this.interrupt();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        ClockDisplay clock = new ClockDisplay();
+        clock.start();
+        
+        // Let it run for 10 seconds then stop
+        Thread.sleep(10000);
+        clock.stopClock();
+    }
+}
